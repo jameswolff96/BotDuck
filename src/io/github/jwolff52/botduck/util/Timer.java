@@ -38,7 +38,7 @@ public class Timer implements Runnable{
 		this.messageCount=messageCount;
 		this.currentCount=0;
 		timers.add(this);
-		new Thread(this);
+		new Thread(this).start();
 	}
 	
 	@Override

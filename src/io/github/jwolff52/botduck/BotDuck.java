@@ -22,7 +22,7 @@ public class BotDuck {
 	Database.initDBConnection();
 	Database.getDb();
     PIRCListener listener = new PIRCListener();
-    Builder<PircBotX> build = new Builder<PircBotX>().setName("botduck").setLogin("botduck").setServerPassword(""/*ENTER YOUR OAUTH HERE*/).setServerHostname("irc.twitch.tv").setServerPort(6667).addListener(listener).setVersion("Version 1.0");
+    Builder<PircBotX> build = new Builder<PircBotX>().setName("botduck").setLogin("botduck").setServerPassword(""/*YOUR OAUTH GOES HERE*/).setServerHostname("irc.twitch.tv").setServerPort(6667).addListener(listener).setVersion("Version 1.0");
     Scanner scan = new Scanner(System.in);
     FTPUtil.initFTP("");
     if (args.length == 0)
