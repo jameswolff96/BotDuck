@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/derby.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/ftp4j-1.7.2.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/logback-classic-1.1.2.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/logback-core-1.1.2.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/pircbotx-2.0.1.jar"/>
+	<classpathentry kind="lib" path="J:/Software Development/Personal/BotDuck/BotDuck/lib/slf4j-api-1.7.10.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,4 @@
+bin/
+BotDuckDB/
+*.txt
+*.log
