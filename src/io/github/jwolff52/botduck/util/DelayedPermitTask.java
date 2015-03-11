@@ -15,16 +15,42 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.util;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import me.jewsofhazard.pcmrbot.Main;
 
-public class Driver {
+public class DelayedPermitTask extends TimerTask{
 
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	private String user;
+	private String channel;
+	
+	private static final Timer timer = new Timer();
+	
+	/**
+	 * @param u - user being permitted
+	 * @param c - channel the permit is in
+	 */
+	public DelayedPermitTask(String u, String c) {
+		this.user = u;
+		this.channel = c;
+		timer.schedule(this, 180000L);
+	}
+	
+	/**
+	 * removes the user from the permit list
+	 */
+	@Override
+	public void run() {
+		Main.getBot().removePermit(this, user);
+	}
+	
+	/**
+	 * @return the channel this permit is for
+	 */
+	public String getChannel() {
+		return channel;
 	}
 }

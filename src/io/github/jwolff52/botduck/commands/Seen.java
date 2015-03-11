@@ -15,16 +15,33 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class Seen extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Normal;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "seen";
+	}
+		
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		String target = parameters[0];
+		String seen=Main.getBot().getChatPostSeen(target);
+		if (seen !=null) {
+			String[] info = seen.split("[|]");
+			return String.format("%s, I last saw %s in %s on %s.", sender, target, info[0], info[1]);
+		} else {
+			return String.format("I'm sorry %s, I haven't seen %s.", sender, target);
+		}
+	}
+
 }

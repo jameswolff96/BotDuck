@@ -15,16 +15,19 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.tests;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.commands.CommandParser;
 
+import org.junit.Test;
 
-public class Driver {
+/**
+ * Tests for {@link CommandParser}
+ */
+public class CommandParserTests {
 
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Test
+	public static void test(String pass) {
+		
 	}
 }

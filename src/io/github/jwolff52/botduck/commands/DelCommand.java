@@ -15,16 +15,27 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
 import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class DelCommand extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
 	}
+
+	@Override
+	public String getCommandText() {
+		return "delcom";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		Database.delCommand(channel.substring(1), parameters[0]);
+		return "Removed command from the database.";
+	}
+
 }

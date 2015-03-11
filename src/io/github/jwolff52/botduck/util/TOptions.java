@@ -15,16 +15,27 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.util;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+public enum TOptions {
 
+	welcomeMessage("welcomeMessage"), numCaps("numCaps"), numSymbols(
+			"numSymbols"), numEmotes("numEmotes"), paragraphLength(
+			"paragraphLength"), link("link"), regular("regular");
 
-public class Driver {
+	private final String optionID;
 
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	/**
+	 * @return the optionID in text form
+	 */
+	public String getOptionID() {
+		return optionID;
+	}
+
+	/**
+	 * @param id - option ID in text form
+	 */
+	TOptions(String id) {
+		optionID = id;
 	}
 }

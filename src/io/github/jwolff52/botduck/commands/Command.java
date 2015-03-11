@@ -15,16 +15,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public abstract class Command {
 
-public class Driver {
+	/**
+	 * @return the level that the user must be to perform the command
+	 */
+	public abstract CLevel getCommandLevel();
 
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
-	}
+	/**
+	 * @return the command without the leading ! or parameters
+	 */
+	public abstract String getCommandText();
+
+	/**
+	 * @param channel - channel the command was sent in
+	 * @param sender - user who sent the command
+	 * @param parameters - parameters sent with the command
+	 * @return a formatted message to send to the channel or null if no message is required
+	 */
+	public abstract String execute(String channel, String sender, String... parameters);
+
 }

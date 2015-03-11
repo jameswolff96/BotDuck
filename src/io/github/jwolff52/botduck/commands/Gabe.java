@@ -15,16 +15,24 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
-
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+public class Gabe extends Command {
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Normal;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "gabe";
+	}
+		
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		return "You can find all of the official pcmasterrace links at http://www.reddit.com/r/pcmasterrace/comments/2verur/check_out_our_official_communities_on_steam/";
+	}
+
 }

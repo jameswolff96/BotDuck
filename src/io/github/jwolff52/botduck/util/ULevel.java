@@ -15,16 +15,32 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.util;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+public enum ULevel {
+	Normal,Follower,Subscriber;
 
-
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	/**
+	 * @param level - User Level as String
+	 * @return User Level Object
+	 */
+	public static ULevel getTypeFromString(String level) {
+		level=level.toLowerCase();
+		if(level.endsWith("s")) {
+			level=level.substring(0, level.length()-1);
+		}
+		switch(level.toLowerCase()) {
+		case "normal":
+		case "everyone":
+		case "all":
+			return Normal;
+		case "follower":
+			return Follower;
+		case "subscriber":
+		case "sub":
+			return Subscriber;
+		default :
+			return null;
+		}
 	}
 }

@@ -15,16 +15,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
-
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+public class LMGTFY extends Command {
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Normal;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "lmgtfy";
+	}
+	
+	@Override
+	public String execute(String channel, String sender, String...parameters) {
+		if (!parameters[0].substring(0, 7).equals("!lmgtfy")) {
+			return "http://lmgtfy.com?q=" + parameters[0].replace(' ', '+');
+		} else {
+			return "You need to add something to search.";
+		}
+	}
+
 }

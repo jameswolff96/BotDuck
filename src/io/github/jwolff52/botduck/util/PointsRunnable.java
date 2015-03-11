@@ -1,80 +1,79 @@
-package io.github.jwolff52.botduck.util;
+package me.jewsofhazard.pcmrbot.util;
 
-import io.github.jwolff52.botduck.database.Database;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.pircbotx.Channel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.jewsofhazard.pcmrbot.database.Database;
+import me.jewsofhazard.pcmrbot.twitch.TwitchUtilities;
 
 public class PointsRunnable implements Runnable {
-	static final Logger logger = LoggerFactory.getLogger(PointsRunnable.class);
+	static final Logger logger = Logger.getLogger(PointsRunnable.class+"");
 	private String user;
-	private Channel channel;
-	private static HashMap<String, Channel> currentUsers = new HashMap<>();
+	private String channelNoHash;
+	private static HashMap<String, ArrayList<String>> currentUsers = new HashMap<>();
 
-	public PointsRunnable(String u, Channel c) {
-		this.user = u;
-		this.channel = c;
-		currentUsers.put(u, c);
+	/**
+	 * @param user - user earning points
+	 * @param channelNoHash - channel the user is in without the leading #
+	 */
+	public PointsRunnable(String user, String channelNoHash) {
+		this.user = user;
+		this.channelNoHash = channelNoHash;
+		addChannel();
 		new Thread(this).start();
 	}
 
-	public void run() {
-		addPoints(this.user, this.channel);
-		try {
-			Thread.sleep(300000L);
-		} catch (InterruptedException e) {
-			logger.error("Error adding points to: " + this.user + "\n"
-					+ e.toString());
+	/**
+	 * adds a channel for the user specified
+	 */
+	private void addChannel() {
+		ArrayList<String> c = currentUsers.get(user);
+		if(c == null) {
+			c = new ArrayList<>();
 		}
+		c.add(channelNoHash);
+		currentUsers.put(user, c);
+	}
+
+	/**
+	 * adds points to the user every 5 minutes
+	 */
+	public void run() {
 		while (currentUsers.containsKey(this.user)) {
+			if(TwitchUtilities.isLive(channelNoHash)) {
+				Database.addPoints(this.user, this.channelNoHash, 1);
+			}
 			try {
 				Thread.sleep(300000L);
 			} catch (InterruptedException e) {
-				logger.error("Error adding points to: " + this.user + "\n"
-						+ e.toString());
+				logger.log(Level.SEVERE, "Error adding points to user", e);
 			}
-			addPoints(this.user, this.channel);
 		}
-	}
-
-	private void addPoints(String nick, Channel c) {
-		ResultSet rs=Database.executeQuery("SELECT * FROM "+Database.DEFAULT_SCHEMA+".donald10101Points WHERE userID=\'"+nick+"\'");
-		try {
-			if(!rs.next()){
-				Database.executeUpdate("INSERT INTO "+Database.DEFAULT_SCHEMA+".donald10101Points VALUES (\'"+nick+"\',1)");
-				return;
-			}
-		} catch (SQLException e1) {
-			logger.error("An Error occured updating "+nick+"'s points!\n"+e1.toString());
-		}
-		try {
-			Database.executeUpdate("UPDATE "+Database.DEFAULT_SCHEMA+".donald10101Points SET "
-					+ "userID=\'"+nick+"\',"
-					+ "points="+(rs.getInt(2)+1)
-					+ " WHERE userID=\'"+nick+"\'");
-			if(rs.getInt(2)+1==72) {
-				Database.executeUpdate("INSERT INTO "+Database.DEFAULT_SCHEMA+".donald10101Regulars VALUES (\'"+nick+"\')");
-			}
-		} catch (SQLException e) {
-			logger.error("An Error occured updating "+nick+"'s points!\n"+e.toString());
-		}
-		
 	}
 	
+	/**
+	 * @param u - user to check
+	 * @return checks if the user is in any channels
+	 */
 	public static boolean containsUser(String u) {
 		return currentUsers.containsKey(u);
 	}
 
-	public static void removeUser(String u) {
-		currentUsers.remove(u);
-	}
-	
-	public static void removeAllUsers() {
-		currentUsers=new HashMap<>();
+	/**
+	 * @param user - user to remove the channel from
+	 * @param channelNoHash - channel to remove without the leading #
+	 */
+	public static void removeChannelFromUser(String user, String channelNoHash) {
+		ArrayList<String> c = currentUsers.get(user);
+		if(c != null) {
+			c.remove(channelNoHash);
+			if(c.size() == 0) {
+				currentUsers.remove(user);
+				return;
+			}
+			currentUsers.put(user, c);
+		}
 	}
 }

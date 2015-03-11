@@ -15,16 +15,30 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class ForceJoin extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
 	}
+
+	@Override
+	public String getCommandText() {
+		return "forcejoin";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		if(channel.equalsIgnoreCase(Main.getBotChannel())) {
+			Main.joinChannel(parameters[0], false);
+			return "Forcefully joining %channel%".replace("%channel%", parameters[0]);
+		}
+		return "You can only preform this command from the main bot channel!";
+	}
+
 }

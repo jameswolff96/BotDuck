@@ -15,16 +15,31 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class Permit extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
 	}
+
+	@Override
+	public String getCommandText() {
+		return "permit";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		String target=parameters[0];
+		if(!Main.getBot().isPermitted(channel, target)) {
+			Main.getBot().addPermit(new me.jewsofhazard.pcmrbot.util.DelayedPermitTask(target, channel), target);
+			return "Permitted %sender% to post a link! You have three minutes".replace("%sender%", target);
+		}
+		return "%sender% has already been permitted to post a link!".replace("%sender%", target);
+	}
+
 }

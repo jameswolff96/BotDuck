@@ -15,16 +15,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
+import me.jewsofhazard.pcmrbot.util.CommandsPage;
 
+public class GenerateCommandsPage extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Owner;
 	}
+
+	@Override
+	public String getCommandText() {
+		return "generatecommandspage";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		if(CommandsPage.createCommandsHTML(channel.substring(1))) {
+			return "Created commands page for your custom commands! http://pcmrbot.no-ip.info/commands/%channel%.html".replace("%channel%", channel.substring(1));
+		}
+		return "It appears you don't have any custom commands! Use !addcom <commandName> \"<reply>\" [parameter1] [parameter2]... to create one";
+	}
+
 }

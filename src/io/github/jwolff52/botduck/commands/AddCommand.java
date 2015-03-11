@@ -15,16 +15,32 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
 import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class AddCommand extends Command {
 
-public class Driver {
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
+	}
 
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public String getCommandText() {
+		return "addcom";
+	}
+	
+//	!addcom !welcome|{user}|Hey there, {user}! Welcome to the chat!
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		StringBuilder params = new StringBuilder();
+		for(int i = 2;i < parameters.length;i++) {
+			params.append(parameters[i] + " ");
+		}
+		Database.addCommand(channel.substring(1), parameters[0], params.toString(), parameters[1]);
+		return "Added command to the database.";
 	}
 }

@@ -15,16 +15,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
+import me.jewsofhazard.pcmrbot.util.CommandsPage;
 
+public class Help extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "help";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String...parameters) {
+		if(CommandsPage.pageExists(channel.substring(1))) {
+			return "You can find all of my commands at http://pcmrbot.no-ip.info/commands and all of the commands for %s at http://pcmrbot.no-ip.info/commands/%s.html.".replace("%channel%", channel.substring(1));
+		}
+		return "You can find all of my commands at http://pcmrbot.no-ip.info/commands.";
+	}
+
 }

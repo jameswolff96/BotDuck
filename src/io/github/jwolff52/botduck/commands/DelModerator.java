@@ -15,16 +15,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
 import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class DelModerator extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Owner;
 	}
+
+	@Override
+	public String getCommandText() {
+		return "delmoderator";
+	}
+
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		if(Database.delModerator(parameters[0].toLowerCase(), channel.substring(1))) {
+			return String.format("Successfully removed %s from the moderator list in %s", parameters[0], channel);
+		}
+		return String.format("Unable to remove %s from the moderator list in %s! Please try again.", parameters[0], channel);
+	}
+
 }

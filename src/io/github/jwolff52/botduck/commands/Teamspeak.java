@@ -15,16 +15,25 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class Teamspeak extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Normal;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "teamspeak";
+	}
+	
+	@Override
+	public String execute(String channel, String sender, String... parameters) {
+		return "You can download teamspeak here:  http://www.teamspeak.com/?page=downloads";
+	}
+
 }

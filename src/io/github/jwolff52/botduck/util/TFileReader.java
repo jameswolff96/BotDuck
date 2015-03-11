@@ -1,33 +1,74 @@
-package io.github.jwolff52.botduck.util;
+/*	  It's a Twitch bot, because we can.
+ *    Copyright (C) 2015  Logan Saso, James Wolff, Kyle Nabinger
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package me.jewsofhazard.pcmrbot.util;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TFileReader {
-  static final Logger logger = LoggerFactory.getLogger(TFileReader.class);
-  
-  @SuppressWarnings("resource")
-  public static ArrayList<String> readFile(File f) {
-    FileInputStream fis = null;
-    try
-    {
-      fis = new FileInputStream(f);
-    }
-    catch (FileNotFoundException e)
-    {
-      logger.error("Error reading the file at location: " + f.getName() + "\n" + e.toString());
-    }
-    ArrayList<String> buffer = new ArrayList<>();
-    Scanner scanner = new Scanner(fis);
-    while (scanner.hasNext()) {
-      buffer.add(scanner.nextLine());
-    }
-    return buffer;
-  }
+	static Logger logger = Logger.getLogger(TFileReader.class + "");
+
+	/**
+	 * @param f - file to be read
+	 * @return ArrayList of lines in the file
+	 */
+	public static ArrayList<String> readFile(File f) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(f);
+		} catch (FileNotFoundException e) {
+			logger.log(Level.SEVERE,
+					"Error reading the file at location: " + f.getName() + "\n"
+							+ e.toString(), e);
+		}
+		ArrayList<String> buffer = new ArrayList<>();
+		try (Scanner scanner = new Scanner(fis)) {
+			while (scanner.hasNext()) {
+				buffer.add(scanner.nextLine());
+			}
+		}
+		return buffer;
+	}
+
+	/**
+	 * @param f - file to be read
+	 * @return all of the lines of the file concatenated together
+	 */
+	public static String readFileAsString(File f) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(f);
+		} catch (FileNotFoundException e) {
+			logger.log(Level.SEVERE,
+					"Error reading the file at location: " + f.getName() + "\n"
+							+ e.toString(), e);
+		}
+		StringBuilder buffer = new StringBuilder();
+		try (Scanner scanner = new Scanner(fis)) {
+			while (scanner.hasNext()) {
+				buffer.append(scanner.nextLine());
+			}
+		}
+		return buffer.toString();
+	}
 }

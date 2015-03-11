@@ -15,16 +15,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
-
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+public class Join extends Command {
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Normal;
+	}
+	
+	@Override
+	public String getCommandText() {
+		return "join";
+	}
+	
+	@Override
+	public String execute(String channel, String sender, String... parameters){
+		if(channel.equalsIgnoreCase(Main.getBotChannel())){
+			Main.joinChannel("#" + sender, false);
+			return "I have joined %user%'s channel.".replace("%user%", sender);
+		}
+		return "Sorry %user%, but I can't join your channel from here! Visit http://twitch.tv/pcmrbot and try again!".replace("%user%", sender);
+		
 	}
 }

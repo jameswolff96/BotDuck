@@ -15,16 +15,38 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
+public class Leave extends Command {
 
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Owner;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "leave";
+	}
+	
+	@Override
+	public String execute(String channel, String sender, String...parameters){
+		if (!channel.equalsIgnoreCase(Main.getBotChannel())) {
+			Main.partChannel(channel);
+			return "I have disconnected from %channel%'s channel.".replace("%channel%", channel);
+		}
+		return "Sorry %user%, I cannot allow you to disconnect me from my home channel.".replace("%user%", sender);
+		
+		
+	}
+	
+	
 }
+
+
+
+
+

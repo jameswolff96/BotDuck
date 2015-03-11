@@ -15,16 +15,36 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.jewsofhazard.pcmrbot;
+package me.jewsofhazard.pcmrbot.commands;
 
-import me.jewsofhazard.pcmrbot.database.Database;
-import me.jewsofhazard.pcmrbot.database.ReadScheduleTable;
+import me.jewsofhazard.pcmrbot.Main;
+import me.jewsofhazard.pcmrbot.util.CLevel;
 
-
-public class Driver {
-
-	public static void main(String[] args) throws Exception {
-		Database.initDBConnection(args[0]);
-		ReadScheduleTable.createDelayedTasks();
+public class Slow extends Command {
+	@Override
+	public CLevel getCommandLevel() {
+		return CLevel.Mod;
 	}
+	
+	@Override
+	public String getCommandText() {
+		return "slow";
+	}
+	
+	@Override
+	public String execute(String channel, String sender, String...parameters) {
+		if (!Main.getBot().getSlowMode(channel)) {
+			Main.getBot().setSlowMode(channel, true);
+			try {
+				int time = Integer.valueOf(parameters[0]);
+				return "/slow "+time;
+			} catch (NumberFormatException e) {
+				return "/slow";
+			}
+		} else {
+			Main.getBot().setSlowMode(channel, false);
+			return "/slowoff";
+		}
+	}
+
 }
